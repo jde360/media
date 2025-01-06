@@ -14,21 +14,50 @@ let producers = [];
 //worker and router
 
 (async () => {
-    worker = await mediasoup.createWorker();
+    worker = await mediasoup.createWorker({
+        logLevel: "debug",
+        logTags: [
+            "dtls",
+            "ice",
+            "info",
+            "rtcp",
+            "rtp",
+            "srtp",
+        ],
+        rtcMinPort: 32256,
+        rtcMaxPort: 65535,
+    });
     console.log('Worker created');
 
     router = await worker.createRouter({
         mediaCodecs: [
             {
-                kind: 'audio',
-                mimeType: 'audio/opus',
+                kind: "audio",
+                mimeType: "audio/opus",
+                preferredPayloadType: 111,
                 clockRate: 48000,
                 channels: 2,
+                parameters: {
+                    minptime: 10,
+                    useinbandfec: 1,
+                },
             },
             {
-                kind: 'video',
-                mimeType: 'video/VP8',
+                kind: "video",
+                mimeType: "video/VP8",
+                preferredPayloadType: 96,
                 clockRate: 90000,
+            },
+            {
+                kind: "video",
+                mimeType: "video/H264",
+                preferredPayloadType: 125,
+                clockRate: 90000,
+                parameters: {
+                    "level-asymmetry-allowed": 1,
+                    "packetization-mode": 1,
+                    "profile-level-id": "42e01f",
+                },
             },
         ],
     });
@@ -44,10 +73,11 @@ io.on('connection', (socket) => {
         console.log('Creating transport...');
 
         const transport = await router.createWebRtcTransport({
-            listenIps: [{ ip: '0.0.0.0', announcedIp: 'YOUR_PUBLIC_IP' }],
+            listenIps: [{ ip: "0.0.0.0", announcedIp: "43.204.97.185" }],
             enableUdp: true,
             enableTcp: true,
             preferUdp: true,
+            initialAvailableOutgoingBitrate: 300000,
         });
 
         transports.push({ socketId: socket.id, transport });
