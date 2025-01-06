@@ -79,6 +79,15 @@ io.on('connection', (socket) => {
             preferUdp: true,
             initialAvailableOutgoingBitrate: 300000,
         });
+        transport.on('dtlsstatechange', dtlsState => {
+            if (dtlsState === 'closed') {
+                transport.close();
+            }
+        });
+
+        transport.on('close', () => {
+            console.log('Transport closed');
+        });
 
         transports.push({ socketId: socket.id, transport });
 
