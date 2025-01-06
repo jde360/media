@@ -69,10 +69,10 @@ io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
 
 
-    socket.on('getRouterRtpCapabilities', async () => {
+    socket.on('getCapabilities', async () => {
         console.log("Creating Router capabilities");
-        console.log(router.rtpCapabilities)
-        socket.emit('routerRtpCapabilities', router.rtpCapabilities);
+        // console.log(router.rtpCapabilities)
+        // socket.emit('routerRtpCapabilities', router.rtpCapabilities);
     })
 
     // Create WebRTC Transport
