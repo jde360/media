@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
     })
 
     // Create WebRTC Transport
-    socket.on('createTransport', async (callback) => {
+    socket.on('createTransport', async () => {
         console.log('Creating transport...');
 
         const transport = await router.createWebRtcTransport({
