@@ -70,6 +70,8 @@ io.on('connection', (socket) => {
 
 
     socket.on('getRouterRtpCapabilities', async () => {
+        console.log("Creating Router capabilities");
+        console.log(router.rtpCapabilities)
         socket.emit('routerRtpCapabilities', router.rtpCapabilities);
     })
 
