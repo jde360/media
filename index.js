@@ -68,6 +68,11 @@ let producers = [];
 io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
 
+
+    socket.on('getRouterRtpCapabilities', async () => {
+        socket.emit('routerRtpCapabilities', router.rtpCapabilities);
+    })
+
     // Create WebRTC Transport
     socket.on('createTransport', async (callback) => {
         console.log('Creating transport...');
@@ -93,12 +98,12 @@ io.on('connection', (socket) => {
 
         console.log('Transport created:', transport.id);
 
-        callback({
+        socket.emit('transportCreated', {
             id: transport.id,
             iceParameters: transport.iceParameters,
             iceCandidates: transport.iceCandidates,
             dtlsParameters: transport.dtlsParameters,
-        });
+        })
     });
 
     // Handle media producing (from host)
