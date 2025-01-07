@@ -24,8 +24,8 @@ let producers = [];
             "rtp",
             "srtp",
         ],
-        rtcMinPort: 10000,
-        rtcMaxPort: 59999,
+        rtcMinPort: 40000,
+        rtcMaxPort: 49999,
     });
     console.log('Worker created');
 
