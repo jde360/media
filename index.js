@@ -24,8 +24,8 @@ let producers = [];
             "rtp",
             "srtp",
         ],
-        rtcMinPort: 32256,
-        rtcMaxPort: 65535,
+        rtcMinPort: 10000,
+        rtcMaxPort: 59999,
     });
     console.log('Worker created');
 
@@ -73,6 +73,7 @@ io.on('connection', (socket) => {
             enableTcp: true,
             preferUdp: true,
             initialAvailableOutgoingBitrate: 300000,
+
         });
         transport.on('dtlsstatechange', dtlsState => {
             if (dtlsState === 'closed') {
@@ -87,7 +88,10 @@ io.on('connection', (socket) => {
         transports.push({ socketId: socket.id, transport });
 
         console.log('Transport created:', transport.id);
-        console.log(transport);
+        console.log(transport.id);
+        console.log(transport.iceParameters);
+        console.log(transport.iceCandidates);
+        console.log(transport.dtlsParameters);
 
 
         socket.emit('transportCreated', {
