@@ -87,8 +87,15 @@ io.on('connection', (socket) => {
         transports.push({ socketId: socket.id, transport });
 
         console.log('Transport created:', transport.id);
+        console.log(transport);
 
-        socket.emit('transportCreated', transport)
+
+        socket.emit('transportCreated', {
+            id: transport.id,
+            iceParameters: transport.iceParameters,
+            iceCandidates: transport.iceCandidates,
+            dtlsParameters: transport.dtlsParameters,
+        })
     });
 
     socket.on('connectTransport', async ({ transportId, dtlsParameters }) => {
