@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
         console.log('Creating transport...');
 
         const transport = await router.createWebRtcTransport({
-            listenIps: [{ ip: "0.0.0.0", announcedIp: "43.204.97.185" }],
+            listenIps: [{ ip: "43.204.97.185", announcedIp: "43.204.97.185" }],
             enableUdp: true,
             enableTcp: true,
             preferUdp: true,
