@@ -71,7 +71,6 @@ io.on('connection', (socket) => {
 
     socket.on('getRouterRtpCapabilities', async () => {
         console.log("Creating Router capabilities");
-
         socket.emit('routerRtpCapabilities', JSON.stringify(router.rtpCapabilities));
     })
 
@@ -120,17 +119,22 @@ io.on('connection', (socket) => {
     });
 
     // Handle media producing (from host)
-    socket.on('produce', async ({ transportId, kind, rtpParameters }, callback) => {
+    socket.on('produce', async ({ transportId, kind, rtpParameters }) => {
+        console.log('Producing...');
+        console.log(transportId);
+        console.log(kind);
+        console.log(rtpParameters);
+
         const transport = transports.find(t => t.transport.id === transportId)?.transport;
         if (!transport) {
-            return callback({ error: 'Transport not found' });
-        }
+            console.log("Transport not found");
+            return;
 
+        }
         const producer = await transport.produce({ kind, rtpParameters });
         producers.push(producer);
-
         console.log(`Producer created: ${producer.kind}`);
-        callback({ id: producer.id });
+
     });
 
     // Handle disconnect
