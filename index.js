@@ -69,10 +69,10 @@ io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
 
 
-    socket.on('getCapabilities', async () => {
+    socket.on('getRouterRtpCapabilities', async () => {
         console.log("Creating Router capabilities");
-        // console.log(router.rtpCapabilities)
-        // socket.emit('routerRtpCapabilities', router.rtpCapabilities);
+        console.log(router.rtpCapabilities)
+        socket.emit('routerRtpCapabilities', router.rtpCapabilities);
     })
 
     // Create WebRTC Transport
@@ -106,6 +106,15 @@ io.on('connection', (socket) => {
             iceCandidates: transport.iceCandidates,
             dtlsParameters: transport.dtlsParameters,
         })
+    });
+
+    socket.on('connectTransport', async ({ transportId, dtlsParameters }) => {
+        const transport = transports.find(t => t.transport.id === transportId)?.transport;
+        if (!transport) {
+            return;
+        }
+
+        await transport.connect({ dtlsParameters });
     });
 
     // Handle media producing (from host)
