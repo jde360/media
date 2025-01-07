@@ -109,6 +109,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('connectTransport', async ({ transportId, dtlsParameters }) => {
+        console.log('Connecting transport...');
+        console.log({ transportId, dtlsParameters });
         const transport = transports.find(t => t.transport.id === transportId)?.transport;
         if (!transport) {
             return;
