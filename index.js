@@ -92,6 +92,7 @@ io.on('connection', (socket) => {
         console.log(transport.iceParameters);
         console.log(transport.iceCandidates);
         console.log(transport.dtlsParameters);
+        transport.dtlsParameters.role = 'client';
 
 
         socket.emit('transportCreated', {
