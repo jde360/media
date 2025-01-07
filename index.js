@@ -47,18 +47,7 @@ let producers = [];
                 mimeType: "video/VP8",
                 preferredPayloadType: 96,
                 clockRate: 90000,
-            },
-            {
-                kind: "video",
-                mimeType: "video/H264",
-                preferredPayloadType: 125,
-                clockRate: 90000,
-                parameters: {
-                    "level-asymmetry-allowed": 1,
-                    "packetization-mode": 1,
-                    "profile-level-id": "42e01f",
-                },
-            },
+            }
         ],
     });
 
@@ -99,12 +88,7 @@ io.on('connection', (socket) => {
 
         console.log('Transport created:', transport.id);
 
-        socket.emit('transportCreated', {
-            id: transport.id,
-            iceParameters: transport.iceParameters,
-            iceCandidates: transport.iceCandidates,
-            dtlsParameters: transport.dtlsParameters,
-        })
+        socket.emit('transportCreated', transport)
     });
 
     socket.on('connectTransport', async ({ transportId, dtlsParameters }) => {
